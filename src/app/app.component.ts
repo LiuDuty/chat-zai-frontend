@@ -5,6 +5,6 @@ import { ChatComponent } from './chat/chat.component';
   selector: 'app-root',
   standalone: true,
   imports: [ChatComponent],
-  template: '<app-chat></app-chat>',
+  template: `<app-chat></app-chat>`,
 })
 export class AppComponent {}

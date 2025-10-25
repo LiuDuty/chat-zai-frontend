@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ZaiService } from '../zai.service';
 
 @Component({
   selector: 'app-chat',
@@ -10,61 +10,23 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.css'],
 })
-export class ChatComponent implements OnInit {
-  mensagem = '';
-  respostas: { role: string; content: string }[] = [];
-  sessionId: string = '';
+export class ChatComponent {
+  mensagens: string[] = [];
+  texto: string = '';
+  sessionId: string = 'session1';
 
-  constructor(private http: HttpClient) {}
-
-  ngOnInit() {
-    // Recupera sessão salva ou cria nova
-    const sessaoSalva = localStorage.getItem('session_id');
-    if (sessaoSalva) {
-      this.sessionId = sessaoSalva;
-      const historico = localStorage.getItem('chat_respostas');
-      if (historico) {
-        this.respostas = JSON.parse(historico);
-      }
-    } else {
-      this.sessionId = this.gerarSessionId();
-      localStorage.setItem('session_id', this.sessionId);
-    }
-  }
-
-  gerarSessionId(): string {
-    return 'sessao-' + Date.now();
-  }
+  constructor(private zaiService: ZaiService) {}
 
   enviar() {
-    if (!this.mensagem.trim()) return;
+    if (!this.texto) return;
 
-    // adiciona mensagem do usuário localmente
-    this.respostas.push({ role: 'user', content: this.mensagem });
-    this.salvarHistorico();
-
-    const payload = {
-      texto: this.mensagem,
-      session_id: this.sessionId,
-    };
-
-    // 🔗 altere a URL abaixo para o endereço real do seu backend no Render
-    this.http
-      .post<{ resposta: string }>('https://seu-backend.onrender.com/mensagem', payload)
-      .subscribe({
-        next: (res) => {
-          this.respostas.push({ role: 'assistant', content: res.resposta });
-          this.salvarHistorico();
-        },
-        error: (err) => {
-          console.error('Erro ao enviar mensagem:', err);
-        },
-      });
-
-    this.mensagem = '';
-  }
-
-  salvarHistorico() {
-    localStorage.setItem('chat_respostas', JSON.stringify(this.respostas));
+    this.zaiService.enviarMensagem(this.texto, this.sessionId).subscribe({
+      next: (res: any) => {
+        this.mensagens.push('Você: ' + this.texto);
+        this.mensagens.push('Assistente: ' + res.resposta);
+        this.texto = '';
+      },
+      error: (err: any) => console.error('Erro ao enviar mensagem', err),
+    });
   }
 }
