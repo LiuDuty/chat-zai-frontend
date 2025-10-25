@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common'; // <- obrigatório
 import { ZaiService } from '../zai.service';
 
 @Component({
   selector: 'app-chat',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, CommonModule], // <- CommonModule adicionado
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.css'],
 })
