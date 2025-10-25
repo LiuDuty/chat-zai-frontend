@@ -1,5 +1,14 @@
-<div>
-  <div *ngFor="let r of respostas">{{ r }}</div>
-  <input [(ngModel)]="mensagem" placeholder="Digite sua mensagem" />
-  <button (click)="enviar()">Enviar</button>
+<div class="chat-container">
+  <div class="mensagens">
+    <div *ngFor="let r of respostas" [ngClass]="r.role">
+      <strong *ngIf="r.role === 'user'">Você:</strong>
+      <strong *ngIf="r.role === 'assistant'">Assistente:</strong>
+      {{ r.content }}
+    </div>
+  </div>
+
+  <div class="input-container">
+    <input [(ngModel)]="mensagem" placeholder="Digite sua mensagem..." (keyup.enter)="enviar()" />
+    <button (click)="enviar()">Enviar</button>
+  </div>
 </div>
