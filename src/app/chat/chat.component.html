@@ -1,0 +1,5 @@
+<div>
+  <div *ngFor="let r of respostas">{{ r }}</div>
+  <input [(ngModel)]="mensagem" placeholder="Digite sua mensagem" />
+  <button (click)="enviar()">Enviar</button>
+</div>
