@@ -1,34 +1,47 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ZaiService } from '../zai.service';
 
 @Component({
   selector: 'app-chat',
-  standalone: true, // 👈 Importante para standalone component
-  imports: [CommonModule, FormsModule], // 👈 Aqui adiciona os módulos necessários
+  standalone: true,
+  imports: [CommonModule, FormsModule],
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.css'],
 })
 export class ChatComponent {
   texto: string = '';
   conversas: { pergunta: string; resposta: string }[] = [];
+  sessionId: string = 'session1';
 
   @ViewChild('chatBox') chatBox!: ElementRef;
 
-  enviar() {
-    if (!this.texto.trim()) return;
+  constructor(private zaiService: ZaiService) {}
 
+  enviar() {
     const pergunta = this.texto.trim();
+    if (!pergunta) return;
+
+    // adiciona imediatamente a pergunta na tela
+    this.conversas.push({ pergunta, resposta: '...' });
     this.texto = '';
 
-    const resposta = this.gerarResposta(pergunta);
-    this.conversas.push({ pergunta, resposta });
+    // faz a requisição para o backend
+    this.zaiService.enviarMensagem(pergunta, this.sessionId).subscribe({
+      next: (res: any) => {
+        const respostaComBr = res.resposta.replace(/\n/g, '<br>');
+        this.conversas[this.conversas.length - 1].resposta = respostaComBr;
+        this.scrollParaFim();
+      },
+      error: (err: any) => {
+        this.conversas[this.conversas.length - 1].resposta = 'Erro ao obter resposta.';
+        console.error('Erro ao enviar mensagem', err);
+      },
+    });
 
-    setTimeout(() => this.scrollParaFim(), 50);
-  }
-
-  gerarResposta(pergunta: string): string {
-    return `Resposta gerada para: "${pergunta}"`;
+    // scroll suave pro final
+    setTimeout(() => this.scrollParaFim(), 100);
   }
 
   scrollParaFim() {

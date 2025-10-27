@@ -4,7 +4,7 @@
     <div class="texto usuario-msg">{{ bloco.pergunta }}</div>
 
     <div class="assistente">🤖 Assistente:</div>
-    <div class="texto assistente-msg">{{ bloco.resposta }}</div>
+    <div class="texto assistente-msg" [innerHTML]="bloco.resposta"></div>
   </div>
 </div>
 

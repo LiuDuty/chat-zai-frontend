@@ -62,3 +62,8 @@ button {
 button:hover {
   background-color: #0069d9;
 }
+
+.texto.assistente-msg {
+  white-space: pre-wrap; /* mantém \n e quebra de linha */
+  line-height: 1.5;
+}
