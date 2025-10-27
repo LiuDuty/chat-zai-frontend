@@ -12,7 +12,7 @@ export class ZaiService {
     // Detecta local ou produção
     this.backendUrl = window.location.hostname.includes('localhost')
       ? 'http://127.0.0.1:8000'
-      : 'https://zai-backend.onrender.com/';
+      : 'https://zai-backend.onrender.com';
   }
 
   enviarMensagem(texto: string, sessionId: string): Observable<any> {
