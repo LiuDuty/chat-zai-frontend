@@ -16,10 +16,10 @@ export class ZaiService {
   }
 
   enviarMensagem(texto: string, sessionId: string): Observable<any> {
-    return this.http.post(`${this.backendUrl}/mensagem`, { texto, session_id: sessionId });
+    return this.http.post(`${this.backendUrl}mensagem`, { texto, session_id: sessionId });
   }
 
   getHistorico(sessionId: string): Observable<any> {
-    return this.http.get(`${this.backendUrl}/historico/${sessionId}`);
+    return this.http.get(`${this.backendUrl}historico/${sessionId}`);
   }
 }
