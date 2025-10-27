@@ -1,32 +1,38 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ZaiService } from '../zai.service';
 
 @Component({
   selector: 'app-chat',
-  standalone: true,
-  imports: [CommonModule, FormsModule],
+  standalone: true, // 👈 Importante para standalone component
+  imports: [CommonModule, FormsModule], // 👈 Aqui adiciona os módulos necessários
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.css'],
 })
 export class ChatComponent {
-  mensagens: string[] = [];
   texto: string = '';
-  sessionId: string = 'session1';
+  conversas: { pergunta: string; resposta: string }[] = [];
 
-  constructor(private zaiService: ZaiService) {}
+  @ViewChild('chatBox') chatBox!: ElementRef;
 
   enviar() {
-    if (!this.texto) return;
+    if (!this.texto.trim()) return;
 
-    this.zaiService.enviarMensagem(this.texto, this.sessionId).subscribe({
-      next: (res: any) => {
-        this.mensagens.push('Você: ' + this.texto);
-        this.mensagens.push('Assistente: ' + res.resposta);
-        this.texto = '';
-      },
-      error: (err: any) => console.error('Erro ao enviar mensagem', err),
-    });
+    const pergunta = this.texto.trim();
+    this.texto = '';
+
+    const resposta = this.gerarResposta(pergunta);
+    this.conversas.push({ pergunta, resposta });
+
+    setTimeout(() => this.scrollParaFim(), 50);
+  }
+
+  gerarResposta(pergunta: string): string {
+    return `Resposta gerada para: "${pergunta}"`;
+  }
+
+  scrollParaFim() {
+    const el = this.chatBox?.nativeElement;
+    if (el) el.scrollTop = el.scrollHeight;
   }
 }

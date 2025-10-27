@@ -1,5 +1,19 @@
-<div class="chat-box">
-  <div *ngFor="let msg of mensagens">{{ msg }}</div>
+<div class="chat-box" #chatBox>
+  <div *ngFor="let bloco of conversas" class="mensagem-bloco">
+    <div class="usuario">🧑‍💬 Você:</div>
+    <div class="texto usuario-msg">{{ bloco.pergunta }}</div>
+
+    <div class="assistente">🤖 Assistente:</div>
+    <div class="texto assistente-msg">{{ bloco.resposta }}</div>
+  </div>
 </div>
-<input type="text" [(ngModel)]="texto" placeholder="Digite sua mensagem" />
-<button (click)="enviar()">Enviar</button>
+
+<div class="input-area">
+  <input
+    type="text"
+    [(ngModel)]="texto"
+    placeholder="Digite sua mensagem..."
+    (keyup.enter)="enviar()"
+  />
+  <button (click)="enviar()">Enviar</button>
+</div>
