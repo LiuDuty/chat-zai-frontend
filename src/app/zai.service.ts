@@ -8,13 +8,14 @@ import { Observable } from 'rxjs';
 export class ZaiService {
   private backendUrl: string;
 
-  constructor(private http: HttpClient) {
-    // Detecta local ou produção
-    this.backendUrl = window.location.hostname.includes('localhost')
-      ? 'http://127.0.0.1:8000'
-      : 'https://zai-backend.onrender.com';
-     this.backendUrl = baseUrl.replace(/\/$/, '');
-  }
+constructor(private http: HttpClient) {
+  const baseUrl = window.location.hostname.includes('localhost')
+    ? 'http://127.0.0.1:8000'
+    : 'https://zai-backend.onrender.com';
+
+  // remove barra final se houver
+  this.backendUrl = baseUrl.replace(/\/$/, '');
+}
 
   enviarMensagem(texto: string, sessionId: string): Observable<any> {
     return this.http.post(`${this.backendUrl}/mensagem`, { texto, session_id: sessionId });
