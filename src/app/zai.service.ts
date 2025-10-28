@@ -13,7 +13,7 @@ export class ZaiService {
     this.backendUrl = window.location.hostname.includes('localhost')
       ? 'http://127.0.0.1:8000'
       : 'https://zai-backend.onrender.com';
-this.backendUrl = baseUrl.replace(/\/$/, '');
+     this.backendUrl = baseUrl.replace(/\/$/, '');
   }
 
   enviarMensagem(texto: string, sessionId: string): Observable<any> {
