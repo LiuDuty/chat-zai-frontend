@@ -6,6 +6,10 @@
     <div class="assistente">🤖 Assistente:</div>
     <div class="texto assistente-msg" [innerHTML]="bloco.resposta"></div>
   </div>
+
+  <div *ngIf="enviando" class="digitando">
+    🤖 Assistente está digitando<span class="pontos">...</span>
+  </div>
 </div>
 
 <div class="input-area">
@@ -14,6 +18,7 @@
     [(ngModel)]="texto"
     placeholder="Digite sua mensagem..."
     (keyup.enter)="enviar()"
+    [disabled]="enviando"
   />
-  <button (click)="enviar()">Enviar</button>
+  <button (click)="enviar()" [disabled]="enviando">Enviar</button>
 </div>
