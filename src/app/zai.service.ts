@@ -12,7 +12,7 @@ export class ZaiService {
   constructor(private http: HttpClient) {
     const baseUrl = window.location.hostname.includes('localhost')
       ? 'http://127.0.0.1:8000'
-      : 'https://zai-backend.onrender.com';
+      : 'https://zai-backend-v2.onrender.com';
 
     // remove barra final se houver
     this.backendUrl = baseUrl.replace(/\/$/, '');
@@ -41,14 +41,12 @@ export class ZaiService {
    * Obtém o contexto atual da conversa (para restaurar histórico)
    */
   getContexto(sessionId: string): Observable<any> {
-    return this.http
-      .get(`${this.backendUrl}/contexto/${sessionId}`)
-      .pipe(
-        timeout(15000), // 15 segundos
-        catchError((error) => {
-          console.error('⚠️ Erro ao obter contexto:', error);
-          return throwError(() => new Error('Erro ao buscar contexto.'));
-        })
-      );
+    return this.http.get(`${this.backendUrl}/contexto/${sessionId}`).pipe(
+      timeout(15000), // 15 segundos
+      catchError((error) => {
+        console.error('⚠️ Erro ao obter contexto:', error);
+        return throwError(() => new Error('Erro ao buscar contexto.'));
+      })
+    );
   }
 }
