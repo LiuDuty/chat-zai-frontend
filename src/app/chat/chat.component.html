@@ -1,3 +1,14 @@
+<div class="input-area">
+  <input
+    type="text"
+    [(ngModel)]="texto"
+    placeholder="Digite sua mensagem..."
+    (keyup.enter)="enviar()"
+    [disabled]="enviando"
+  />
+  <button (click)="enviar()" [disabled]="enviando">Enviar</button>
+</div>
+
 <div class="chat-box" #chatBox>
   <div *ngFor="let bloco of conversas" class="mensagem-bloco">
     <div class="usuario">🧑‍💬 Você:</div>
@@ -10,15 +21,4 @@
   <div *ngIf="enviando" class="digitando">
     🤖 Assistente está digitando<span class="pontos">...</span>
   </div>
-</div>
-
-<div class="input-area">
-  <input
-    type="text"
-    [(ngModel)]="texto"
-    placeholder="Digite sua mensagem..."
-    (keyup.enter)="enviar()"
-    [disabled]="enviando"
-  />
-  <button (click)="enviar()" [disabled]="enviando">Enviar</button>
 </div>
